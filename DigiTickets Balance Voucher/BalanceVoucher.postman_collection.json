@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "3d724c48-935d-46fa-b7ba-8e06a876b0d1",
 		"name": "Balance Voucher",
-		"description": "#Overview\n\nAn example of using a DigiTickets Balance Voucher as a payment method.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.test)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- voucherRef (the ref of an existing voucher to use as the payment method)\n- ticketID (the id of a ticket to purchase)",
+		"description": "#Overview\n\nAn example of creating a new order using a DigiTickets Balance Voucher as a payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user, a Ticket, and a Balance Voucher. You will then need to have sold a Balance Voucher in order to create a Sold Balance Gift Voucher that you can then use for payment.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- voucherRef (the ref of an existing balance voucher that has already been sold to use as the payment method)\n- ticketID (the id of a ticket to purchase)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -15,7 +15,35 @@
 						"id": "5e64991f-23ad-43e0-9cbc-2ccd6a1fa8d5",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);"
+							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1ed925ad-bbf5-4d5c-9876-e2647a273982",
+						"exec": [
+							"// Clear all the variables that are set dynamically using request repsonses e.g. apiKeys",
+							"// If we don't clear these, they get saved and polute the next run using an invalid apiKey for example.",
+							"",
+							"const varsToKeep = [",
+							"        'apiPassword',",
+							"        'apiUrl',",
+							"        'apiUser',",
+							"];",
+							"",
+							"function clearVariables() {",
+							"    const varsToDelete = pm.environment.values.filter((item) => !varsToKeep.includes(item.key));",
+							"    varsToDelete.each((item) => pm.environment.unset(item.key));",
+							"}",
+							"",
+							"clearVariables();"
 						],
 						"type": "text/javascript"
 					}
@@ -63,7 +91,11 @@
 							"var jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
 							"pm.collectionVariables.set(\"itemType\", jsonData.itemType);",
-							"pm.collectionVariables.set(\"ticketPrice\", jsonData.price);"
+							"pm.collectionVariables.set(\"ticketPrice\", jsonData.price);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -173,7 +205,9 @@
 					"script": {
 						"id": "30ab0ae7-9ea6-40dd-a339-4df07e71c541",
 						"exec": [
-							""
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -373,7 +407,12 @@
 						"id": "30ab0ae7-9ea6-40dd-a339-4df07e71c541",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);"
+							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -565,15 +604,140 @@
 			"response": []
 		},
 		{
-			"name": "Check the balance of an existing voucher",
+			"name": "Check the balance of an invalid voucher ref",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "8f30d478-815c-4782-8bde-c88f849d21cc",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"pm.collectionVariables.set(\"voucherRef\", jsonData[0].ref);"
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response test\", function () {",
+							"    const jsonData = JSON.parse(responseBody);",
+							"    pm.expect(jsonData).to.eql([]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "{{apiKey}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "apiKey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Referer",
+						"value": "https://epos.digitickets.test/"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Origin",
+						"value": "https://epos.digitickets.test"
+					}
+				],
+				"url": {
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref=INVALIDREF&resolve=giftvoucher,recipient",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"v2",
+						"soldgiftvouchers"
+					],
+					"query": [
+						{
+							"key": "branchID",
+							"value": "1"
+						},
+						{
+							"key": "isoDates",
+							"value": "1"
+						},
+						{
+							"key": "ref",
+							"value": "INVALIDREF"
+						},
+						{
+							"key": "resolve",
+							"value": "giftvoucher,recipient"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check the balance of an existing voucher Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "76da3018-8d3b-421d-892e-0543554fb771",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -684,6 +848,20 @@
 		},
 		{
 			"name": "Create order using the voucher as a payment method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5099747-9803-4910-8f7b-a2b7acbf4159",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "apikey",
@@ -889,6 +1067,20 @@
 		},
 		{
 			"name": "Check the balance of the voucher again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e0d37a3-a20a-42d1-a65a-dc77b88071d3",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "apikey",
@@ -1030,58 +1222,49 @@
 	],
 	"variable": [
 		{
-			"id": "b2b26649-9d66-4fbe-8d05-11dcb2b0ed19",
-			"key": "voucherRef",
-			"value": "V6FGR9HQG8M4FKP3",
-			"type": "string"
-		},
-		{
-			"id": "93b657c5-e4af-4081-b767-f4d1538bf81d",
-			"key": "ticketID",
-			"value": "4",
-			"type": "string"
-		},
-		{
-			"id": "ba9b97b6-01eb-4bbe-b214-ce0f2ce96683",
-			"key": "reservationToken",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"id": "b2a25756-30a0-400d-a29e-61479003c6ff",
-			"key": "itemID",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"id": "2f4ec706-9e14-4e03-b494-e0212ce52a20",
-			"key": "itemType",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"id": "d7743027-e3bf-4e7e-9b99-10012219b02a",
-			"key": "ticketPrice",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"id": "670f6e84-5990-4365-8de3-45b79cdd99d6",
-			"key": "apiKey",
-			"value": "",
-			"type": "string"
-		},
-		{
-			"id": "e33a6ac7-5464-4bef-9e06-0f7fe7002fb2",
+			"id": "1246fddf-1356-4b47-9989-989d5bd6f490",
 			"key": "currentDateTime",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "785f1872-b829-436d-a2e0-db1f9e673174",
+			"id": "bd157378-3df5-4fcf-a952-1d77e7b63864",
 			"key": "currentDateTimeISO",
-			"value": "",
-			"type": "string"
+			"value": ""
+		},
+		{
+			"id": "565a0adb-6d0b-4bce-a938-501d1623265d",
+			"key": "apiKey",
+			"value": ""
+		},
+		{
+			"id": "9e551865-4252-4cc6-b4b9-e9c10c9f74bc",
+			"key": "ticketID",
+			"value": "4"
+		},
+		{
+			"id": "0fcbdcb5-e330-45e2-a52e-bc6d52b9929b",
+			"key": "itemID",
+			"value": ""
+		},
+		{
+			"id": "1a67d5d2-a09b-4dba-8899-babd58ef8bba",
+			"key": "itemType",
+			"value": ""
+		},
+		{
+			"id": "622e3417-fe0b-46ab-aa63-dddb1bba88dc",
+			"key": "ticketPrice",
+			"value": ""
+		},
+		{
+			"id": "fcd4c62d-7ca4-4e5b-b717-943c24ccd999",
+			"key": "voucherRef",
+			"value": "VCXY-NY87-FC82-Z389"
+		},
+		{
+			"id": "02eb7ac0-7a13-4365-9fe8-8947f8aac11e",
+			"key": "reservationToken",
+			"value": ""
 		}
 	],
 	"protocolProfileBehavior": {}
