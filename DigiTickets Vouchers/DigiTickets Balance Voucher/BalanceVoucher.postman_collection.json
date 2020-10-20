@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "3d724c48-935d-46fa-b7ba-8e06a876b0d1",
-		"name": "Balance Voucher",
+		"name": "DigiTickets Balance Voucher",
 		"description": "#Overview\n\nAn example of creating a new order using a DigiTickets Balance Voucher as a payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user, a Ticket, and a Balance Voucher. You will then need to have sold a Balance Voucher in order to create a Sold Balance Gift Voucher that you can then use for payment.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- voucherRef (the ref of an existing balance voucher that has already been sold to use as the payment method)\n- ticketID (the id of a ticket to purchase)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 					"script": {
 						"id": "5e64991f-23ad-43e0-9cbc-2ccd6a1fa8d5",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
+							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
 							"",
 							"pm.test(\"Status test\", function () {",
@@ -88,7 +88,7 @@
 					"script": {
 						"id": "8f30d478-815c-4782-8bde-c88f849d21cc",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
+							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
 							"pm.collectionVariables.set(\"itemType\", jsonData.itemType);",
 							"pm.collectionVariables.set(\"ticketPrice\", jsonData.price);",
@@ -406,7 +406,7 @@
 					"script": {
 						"id": "30ab0ae7-9ea6-40dd-a339-4df07e71c541",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
+							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
 							"",
 							"pm.test(\"Status test\", function () {",
@@ -728,7 +728,7 @@
 			"response": []
 		},
 		{
-			"name": "Check the balance of an existing voucher Copy",
+			"name": "Check the balance of an existing voucher",
 			"event": [
 				{
 					"listen": "test",
@@ -973,7 +973,7 @@
 						},
 						{
 							"key": "payments[0][amount]",
-							"value": "14.95",
+							"value": "{{ticketPrice}}",
 							"type": "text"
 						},
 						{
@@ -1003,7 +1003,7 @@
 						},
 						{
 							"key": "payments[0][tendered]",
-							"value": "14.95",
+							"value": "{{ticketPrice}}",
 							"type": "text"
 						},
 						{
@@ -1033,7 +1033,7 @@
 						},
 						{
 							"key": "total",
-							"value": "14.95",
+							"value": "{{ticketPrice}}",
 							"type": "text"
 						}
 					],
@@ -1222,47 +1222,47 @@
 	],
 	"variable": [
 		{
-			"id": "1246fddf-1356-4b47-9989-989d5bd6f490",
+			"id": "fd7d753a-fecb-476d-a62e-1901187ce18a",
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
-			"id": "bd157378-3df5-4fcf-a952-1d77e7b63864",
+			"id": "be45ffa7-e6f7-4c7e-a8ba-d6122eaf347e",
 			"key": "currentDateTimeISO",
 			"value": ""
 		},
 		{
-			"id": "565a0adb-6d0b-4bce-a938-501d1623265d",
+			"id": "0c52fbcf-61b3-4ddb-a2da-3002d569d900",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "9e551865-4252-4cc6-b4b9-e9c10c9f74bc",
+			"id": "5405d2e6-2e42-41de-8a87-df3df8ea59a4",
 			"key": "ticketID",
 			"value": "4"
 		},
 		{
-			"id": "0fcbdcb5-e330-45e2-a52e-bc6d52b9929b",
+			"id": "590a4387-22c4-4715-90a9-8a65e4950d2b",
 			"key": "itemID",
 			"value": ""
 		},
 		{
-			"id": "1a67d5d2-a09b-4dba-8899-babd58ef8bba",
+			"id": "20e0721c-8fed-459d-a141-dafb2382677f",
 			"key": "itemType",
 			"value": ""
 		},
 		{
-			"id": "622e3417-fe0b-46ab-aa63-dddb1bba88dc",
+			"id": "362e35c0-3b54-4d8d-9aff-c9a947f27428",
 			"key": "ticketPrice",
 			"value": ""
 		},
 		{
-			"id": "fcd4c62d-7ca4-4e5b-b717-943c24ccd999",
+			"id": "a9404a76-74d4-4933-afbe-15ac5e99bdae",
 			"key": "voucherRef",
 			"value": "VCXY-NY87-FC82-Z389"
 		},
 		{
-			"id": "02eb7ac0-7a13-4365-9fe8-8947f8aac11e",
+			"id": "8f4069b4-dcab-4439-8ec5-4a944bc6dc9b",
 			"key": "reservationToken",
 			"value": ""
 		}
