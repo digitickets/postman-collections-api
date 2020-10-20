@@ -6,16 +6,7 @@ A DigiTickets voucher is a payment method not a type of discount. Use it as you 
 
 In order to get information about a specific voucher in order to check the balance for example, you need to make an authenticated request to the `/v2/soldgiftvouchers` api endpoint passing the 16 character voucher reference in the `ref` param.
 
-**NOTE** A request for an invalid voucher will return `[]` a request for a valid voucher code will return the details of that voucher. It is up to you as a developer to check currentBalance, status, expiredAt, etc. to decide how you would like to handle the voucher.
-
-## Request flow
-
-1. Add products to the cart
-2. Create a reservation
-3. Check the validity of a voucher
-4. Make a cartcalculations request to get discount information. This must include the voucher as a payment.
-5. Update (or create) a reservation using the discount information
-6. Create an order using the voucher as a payment method
+**NOTE** A request for an invalid voucher code will return `[]` a request for a valid voucher code will return the details of that voucher. It is up to you as a developer to check currentBalance, status, expiredAt, etc. to decide how you would like to handle the voucher.
 
 ## Prerequisites
 
@@ -40,7 +31,16 @@ Create an experience voucher using the default settings. You will need to add:
 - Delivery Options
 - A specific item or items in a category that this voucher is valid for
 
+## Request flow
 
+1. Add products to the cart
+2. Create a reservation
+3. Check the validity of a voucher
+4. Make a cartcalculations request to get discount information. This must include the voucher as a payment.
+5. Update (or create) a reservation using the discount information
+6. Create an order using the voucher as a payment method
+
+**NOTE** Because an Experience Voucher has a price that could be different to the item it is used to purchase the discount amount and percentage could be negative.
 
 ## Set environment variables
 
@@ -58,3 +58,5 @@ Edit the collection variables specific to this test and set:
 
 - **voucherRef** (the ref of an existing experience voucher that has already been sold to use as the payment method)
 - **ticketID** (the id of a ticket to purchase)
+
+**NOTE** You will need to set a new voucherRef for each collection run because Postman cannot prompt for user input.
