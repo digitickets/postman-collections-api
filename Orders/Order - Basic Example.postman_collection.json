@@ -1,0 +1,702 @@
+{
+	"info": {
+		"_postman_id": "f6c93ae8-ba7d-419a-9df0-dafea724f8c0",
+		"name": "Order - Basic Example",
+		"description": "#Overview\n\nAn example of creating a new order using a cash as the payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user and a Ticket.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- ticketID (the id of a ticket to purchase)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login and get apiKey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "25350c1d-f75d-4e45-a491-ba086d588dfb",
+						"exec": [
+							"const jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9c63838b-cca1-4f97-92c4-255bace999af",
+						"exec": [
+							"// Clear all the variables that are set dynamically using request repsonses e.g. apiKeys",
+							"// If we don't clear these, they get saved and polute the next run using an invalid apiKey for example.",
+							"",
+							"const varsToKeep = [",
+							"        'apiPassword',",
+							"        'apiUrl',",
+							"        'apiUser',",
+							"];",
+							"",
+							"function clearVariables() {",
+							"    const varsToDelete = pm.environment.values.filter((item) => !varsToKeep.includes(item.key));",
+							"    varsToDelete.each((item) => pm.environment.unset(item.key));",
+							"}",
+							"",
+							"clearVariables();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{apiUrl}}/v2/users/auth?username={{apiUser}}&password={{apiPassword}}",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"v2",
+						"users",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "{{apiUser}}"
+						},
+						{
+							"key": "password",
+							"value": "{{apiPassword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a ticket",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "966c0a90-45a1-4133-990d-a069a2a9d125",
+						"exec": [
+							"const jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
+							"pm.collectionVariables.set(\"itemType\", jsonData.itemType);",
+							"pm.collectionVariables.set(\"ticketPrice\", jsonData.price);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "{{apiKey}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "apiKey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Referer",
+						"value": "https://epos.digitickets.test/"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Origin",
+						"value": "https://epos.digitickets.test"
+					}
+				],
+				"url": {
+					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID=1&isoDates=1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"v2",
+						"tickets",
+						"{{ticketID}}"
+					],
+					"query": [
+						{
+							"key": "branchID",
+							"value": "1"
+						},
+						{
+							"key": "isoDates",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d6338c6-64d0-4865-ba23-8905d5048df9",
+						"exec": [
+							"const jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
+							"",
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "{{apiKey}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "apiKey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Referer",
+						"value": "https://epos.digitickets.test/"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site"
+					},
+					{
+						"key": "Origin",
+						"value": "https://epos.digitickets.test"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "date",
+							"value": " {{currentDateTime}}",
+							"type": "text"
+						},
+						{
+							"key": "deviceID",
+							"value": " 4",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][baseTotal]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][branchID]",
+							"value": " 1",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][discountAmount]",
+							"value": " 0",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][discountedBaseTotal]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][discountPercentage]",
+							"value": " 0",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][donation]",
+							"value": " 0",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][giftaid]",
+							"value": " 0",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][itemID]",
+							"value": "{{itemID}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][itemType]",
+							"value": "{{itemType}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][lineNumber]",
+							"value": " 1",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][lineTotal]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][price]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "lines[0][qty]",
+							"value": " 1",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"v2",
+						"reservations"
+					],
+					"query": [
+						{
+							"key": "branchID",
+							"value": "1"
+						},
+						{
+							"key": "isoDates",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Create a reservation and get a reservationToken"
+			},
+			"response": []
+		},
+		{
+			"name": "Create order using cash as a payment method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0fa8d41f-2507-4eb5-a282-c5423ca32520",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "{{apiKey}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "apiKey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded;charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Referer",
+						"value": "https://epos.digitickets.test/"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-site"
+					},
+					{
+						"key": "Origin",
+						"value": "https://epos.digitickets.test"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "date",
+							"value": "{{currentDateTime}}",
+							"type": "text"
+						},
+						{
+							"key": "deviceID",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "force",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "giftaid",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "paid",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "paidAt",
+							"value": "{{currentDateTimeISO}}",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][amount]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][changeGiven]",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][cashback]",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][gratuity]",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][paid]",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][takenAt]",
+							"value": "{{currentDateTimeISO}}",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][tendered]",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][transactionRef]",
+							"value": "{{voucherRef}}",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][paymentChannelID]",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "payments[0][paymentMethodID]",
+							"value": "52",
+							"type": "text"
+						},
+						{
+							"key": "requestAutoRedeem",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "reservationToken",
+							"value": "{{reservationToken}}",
+							"type": "text"
+						},
+						{
+							"key": "total",
+							"value": "{{ticketPrice}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"v2",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "branchID",
+							"value": "1"
+						},
+						{
+							"key": "isoDates",
+							"value": "1"
+						}
+					]
+				},
+				"description": "To use a DigiTickets Balance Gift Voucher as a payment method the key piece of information is the `transactionRef` - which should be the `ref` (voucher code) of the 'Sold Gift Voucher' this links the payment to a specific voucher."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5e28c47f-3afd-4b14-ace4-471fab48452d",
+				"type": "text/javascript",
+				"exec": [
+					"const d = new Date();",
+					"",
+					"let year = d.getFullYear();",
+					"let month = ('0'+(d.getMonth()+1)).slice(-2);",
+					"let day = ('0' + d.getDate()).slice(-2);",
+					"let hours = (\"0\" + d.getHours()).slice(-2);",
+					"let minutes = (\"0\" + d.getMinutes()).slice(-2);",
+					"let seconds = (\"0\" + d.getSeconds()).slice(-2);",
+					"",
+					"let formatedDate = year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;",
+					"",
+					"pm.collectionVariables.set(\"currentDateTime\", formatedDate);",
+					"pm.collectionVariables.set(\"currentDateTimeISO\", d.toISOString());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "dd374628-7cf3-4e4d-a9d5-be195bb2a679",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "af8a9d7b-59ca-459a-80e2-f6b3eb99b97d",
+			"key": "currentDateTime",
+			"value": ""
+		},
+		{
+			"id": "52ab017d-e0dc-4c59-9111-3641e63e51a9",
+			"key": "currentDateTimeISO",
+			"value": ""
+		},
+		{
+			"id": "da5ae28a-d7f5-4bc9-bf22-bcef77e5cdce",
+			"key": "apiKey",
+			"value": ""
+		},
+		{
+			"id": "3d33bf74-3197-4254-88e8-696d79cf39f1",
+			"key": "ticketID",
+			"value": "4"
+		},
+		{
+			"id": "7f51d7c4-1a3f-4c11-8ffa-72590bbc1519",
+			"key": "itemID",
+			"value": ""
+		},
+		{
+			"id": "aa0349ba-2b5f-41a7-b301-92ee2f3194f3",
+			"key": "itemType",
+			"value": ""
+		},
+		{
+			"id": "5b55d4ba-eacf-46f3-b540-9b5c1c1ebff3",
+			"key": "ticketPrice",
+			"value": ""
+		},
+		{
+			"id": "7e04a167-8d57-4a25-b2ce-8faa89a141fb",
+			"key": "reservationToken",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
