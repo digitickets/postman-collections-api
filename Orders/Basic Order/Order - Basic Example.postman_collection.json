@@ -12,7 +12,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "25350c1d-f75d-4e45-a491-ba086d588dfb",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
@@ -27,7 +26,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "9c63838b-cca1-4f97-92c4-255bace999af",
 						"exec": [
 							"// Clear all the variables that are set dynamically using request repsonses e.g. apiKeys",
 							"// If we don't clear these, they get saved and polute the next run using an invalid apiKey for example.",
@@ -86,7 +84,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "966c0a90-45a1-4133-990d-a069a2a9d125",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
@@ -203,7 +200,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8d6338c6-64d0-4865-ba23-8905d5048df9",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
@@ -304,11 +300,6 @@
 							"type": "text"
 						},
 						{
-							"key": "deviceID",
-							"value": " 4",
-							"type": "text"
-						},
-						{
 							"key": "lines[0][baseTotal]",
 							"value": "{{ticketPrice}}",
 							"type": "text"
@@ -373,10 +364,7 @@
 							"value": " 1",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
@@ -403,12 +391,11 @@
 			"response": []
 		},
 		{
-			"name": "Create order using cash as a payment method",
+			"name": "Create order using card offline as a payment method",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "0fa8d41f-2507-4eb5-a282-c5423ca32520",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -503,11 +490,6 @@
 							"type": "text"
 						},
 						{
-							"key": "deviceID",
-							"value": "4",
-							"type": "text"
-						},
-						{
 							"key": "force",
 							"value": "1",
 							"type": "text"
@@ -563,23 +545,13 @@
 							"type": "text"
 						},
 						{
-							"key": "payments[0][transactionRef]",
-							"value": "{{voucherRef}}",
-							"type": "text"
-						},
-						{
 							"key": "payments[0][paymentChannelID]",
 							"value": "4",
 							"type": "text"
 						},
 						{
 							"key": "payments[0][paymentMethodID]",
-							"value": "52",
-							"type": "text"
-						},
-						{
-							"key": "requestAutoRedeem",
-							"value": "1",
+							"value": "2",
 							"type": "text"
 						},
 						{
@@ -592,10 +564,7 @@
 							"value": "{{ticketPrice}}",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
@@ -626,7 +595,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5e28c47f-3afd-4b14-ace4-471fab48452d",
 				"type": "text/javascript",
 				"exec": [
 					"const d = new Date();",
@@ -648,7 +616,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "dd374628-7cf3-4e4d-a9d5-be195bb2a679",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -658,45 +625,36 @@
 	],
 	"variable": [
 		{
-			"id": "af8a9d7b-59ca-459a-80e2-f6b3eb99b97d",
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
-			"id": "52ab017d-e0dc-4c59-9111-3641e63e51a9",
 			"key": "currentDateTimeISO",
 			"value": ""
 		},
 		{
-			"id": "da5ae28a-d7f5-4bc9-bf22-bcef77e5cdce",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "3d33bf74-3197-4254-88e8-696d79cf39f1",
 			"key": "ticketID",
 			"value": "4"
 		},
 		{
-			"id": "7f51d7c4-1a3f-4c11-8ffa-72590bbc1519",
 			"key": "itemID",
 			"value": ""
 		},
 		{
-			"id": "aa0349ba-2b5f-41a7-b301-92ee2f3194f3",
 			"key": "itemType",
 			"value": ""
 		},
 		{
-			"id": "5b55d4ba-eacf-46f3-b540-9b5c1c1ebff3",
 			"key": "ticketPrice",
 			"value": ""
 		},
 		{
-			"id": "7e04a167-8d57-4a25-b2ce-8faa89a141fb",
 			"key": "reservationToken",
 			"value": ""
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
