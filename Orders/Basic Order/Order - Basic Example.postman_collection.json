@@ -3,11 +3,12 @@
 		"_postman_id": "f6c93ae8-ba7d-419a-9df0-dafea724f8c0",
 		"name": "Order - Basic Example",
 		"description": "#Overview\n\nAn example of creating a new order using a cash as the payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user and a Ticket.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- ticketID (the id of a ticket to purchase)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5064541"
 	},
 	"item": [
 		{
-			"name": "Login and get apiKey",
+			"name": "Login and get apiKey Copy",
 			"event": [
 				{
 					"listen": "test",
@@ -171,7 +172,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -183,7 +184,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -296,7 +297,7 @@
 					"formdata": [
 						{
 							"key": "date",
-							"value": " {{currentDateTime}}",
+							"value": "{{currentDateTime}}",
 							"type": "text"
 						},
 						{
@@ -305,13 +306,8 @@
 							"type": "text"
 						},
 						{
-							"key": "lines[0][branchID]",
-							"value": " 1",
-							"type": "text"
-						},
-						{
 							"key": "lines[0][discountAmount]",
-							"value": " 0",
+							"value": "0",
 							"type": "text"
 						},
 						{
@@ -321,17 +317,17 @@
 						},
 						{
 							"key": "lines[0][discountPercentage]",
-							"value": " 0",
+							"value": "0",
 							"type": "text"
 						},
 						{
 							"key": "lines[0][donation]",
-							"value": " 0",
+							"value": "0",
 							"type": "text"
 						},
 						{
 							"key": "lines[0][giftaid]",
-							"value": " 0",
+							"value": "0",
 							"type": "text"
 						},
 						{
@@ -346,7 +342,7 @@
 						},
 						{
 							"key": "lines[0][lineNumber]",
-							"value": " 1",
+							"value": "1",
 							"type": "text"
 						},
 						{
@@ -567,7 +563,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/orders?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -578,7 +574,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -625,20 +621,25 @@
 	],
 	"variable": [
 		{
+			"key": "apiKey",
+			"value": ""
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "ticketID",
+			"value": "4"
+		},
+		{
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
 			"key": "currentDateTimeISO",
 			"value": ""
-		},
-		{
-			"key": "apiKey",
-			"value": ""
-		},
-		{
-			"key": "ticketID",
-			"value": "4"
 		},
 		{
 			"key": "itemID",

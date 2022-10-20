@@ -172,7 +172,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -184,7 +184,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -306,11 +306,6 @@
 							"type": "text"
 						},
 						{
-							"key": "lines[0][branchID]",
-							"value": " 1",
-							"type": "text"
-						},
-						{
 							"key": "lines[0][discountAmount]",
 							"value": " 0",
 							"type": "text"
@@ -368,7 +363,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/reservations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -379,7 +374,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -516,7 +511,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/orders?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -527,7 +522,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -567,7 +562,7 @@
 						},
 						{
 							"key": "payments[0][amount]",
-							"value": "{{ticketPrice}}",
+							"value": "45",
 							"type": "text"
 						},
 						{
@@ -588,7 +583,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/payments?branchID=1&isoDates=1&apiKey={{apiKey}}",
+					"raw": "{{apiUrl}}/v2/payments?branchID={{branchID}}&isoDates=1&apiKey={{apiKey}}",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -599,7 +594,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -649,20 +644,25 @@
 	],
 	"variable": [
 		{
+			"key": "apiKey",
+			"value": ""
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "ticketID",
+			"value": "4"
+		},
+		{
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
 			"key": "currentDateTimeISO",
 			"value": ""
-		},
-		{
-			"key": "apiKey",
-			"value": ""
-		},
-		{
-			"key": "ticketID",
-			"value": "4"
 		},
 		{
 			"key": "itemID",

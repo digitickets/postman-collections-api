@@ -176,7 +176,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/membershipplans?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/membershipplans?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -187,7 +187,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -309,11 +309,6 @@
 							"type": "text"
 						},
 						{
-							"key": "lines[0][branchID]",
-							"value": " 1",
-							"type": "text"
-						},
-						{
 							"key": "lines[0][discountAmount]",
 							"value": " 0",
 							"type": "text"
@@ -371,7 +366,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/reservations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -382,7 +377,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -501,27 +496,32 @@
 						{
 							"key": "date",
 							"value": "{{currentDateTime}}",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "force",
 							"value": "1",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "giftaid",
 							"value": "0",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "paid",
 							"value": "1",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "paidAt",
 							"value": "{{currentDateTimeISO}}",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "payments[0][amount]",
@@ -585,7 +585,8 @@
 						{
 							"key": "total",
 							"value": "{{itemPrice}}",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "memberships[0][membershipPlanID]",
@@ -595,7 +596,8 @@
 						{
 							"key": "memberships[0][membershipDateFrom]",
 							"value": "{{dateToday}}",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "memberships[0][members][0][firstName]",
@@ -611,11 +613,16 @@
 							"key": "memberships[0][members][0][email]",
 							"value": "customer.email.{{$timestamp}}@example.com",
 							"type": "text"
+						},
+						{
+							"key": "x",
+							"value": "",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/orders?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -626,7 +633,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -729,6 +736,11 @@
 		{
 			"key": "dateToday",
 			"value": ""
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
 		}
 	]
 }

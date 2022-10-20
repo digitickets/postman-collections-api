@@ -33,5 +33,6 @@ Edit your environment to set values for the following variables:
 Edit the collection variables specific to this test and set:
 
 - **membershipPlanName** (the name of the membershipPlan to purchase)
+- **branchID**
 
 ## Notes
