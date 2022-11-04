@@ -87,11 +87,11 @@
 					"script": {
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
-							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
-							"pm.collectionVariables.set(\"itemType\", jsonData.itemType);",
-							"pm.collectionVariables.set(\"ticketPrice\", jsonData.price);",
-							"pm.collectionVariables.set(\"ticketPriceQty\", jsonData.price * pm.collectionVariables.get('qty'));",
-							"",
+							"pm.collectionVariables.set(\"itemID\", jsonData[0].events.tickets[0].itemID);",
+							"pm.collectionVariables.set(\"itemType\", jsonData[0].events.tickets[0].itemType);",
+							"pm.collectionVariables.set(\"ticketPrice\", jsonData[0].events.tickets[0].price);",
+							"pm.collectionVariables.set(\"ticketPriceQty\", jsonData[0].events.tickets[0].price * pm.collectionVariables.get('qty'));",
+							"pm.collectionVariables.set(\"sessionID\", jsonData[0].sessionID);",
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});"
@@ -173,14 +173,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID={{branchID}}&isoDates=1",
+					"raw": "{{apiUrl}}/v2/sessions?branchID={{branchID}}&isoDates=1&resolve=*&eventCatID={{eventCatID}}",
 					"host": [
 						"{{apiUrl}}"
 					],
 					"path": [
 						"v2",
-						"tickets",
-						"{{ticketID}}"
+						"sessions"
 					],
 					"query": [
 						{
@@ -190,6 +189,14 @@
 						{
 							"key": "isoDates",
 							"value": "1"
+						},
+						{
+							"key": "resolve",
+							"value": "*"
+						},
+						{
+							"key": "eventCatID",
+							"value": "{{eventCatID}}"
 						}
 					]
 				}

@@ -6,7 +6,7 @@ If your test company has tax enabled then tax will be applied to this order at t
 
 ## Request flow
 
-1. Find and return a single session
+1. Search for sessions valid today for a specific event. Use the first session and the first ticket for that session.
 2. Create a reservation
 4. Create an order using the reservation token from the previous step
 
