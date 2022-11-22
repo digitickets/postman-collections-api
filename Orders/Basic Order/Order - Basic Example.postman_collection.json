@@ -363,7 +363,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/reservations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -374,7 +374,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",

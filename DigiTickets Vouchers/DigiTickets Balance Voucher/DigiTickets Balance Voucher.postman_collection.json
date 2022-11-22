@@ -3,7 +3,8 @@
 		"_postman_id": "3d724c48-935d-46fa-b7ba-8e06a876b0d1",
 		"name": "DigiTickets Balance Voucher",
 		"description": "#Overview\n\nAn example of creating a new order using a DigiTickets Balance Voucher as a payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user, a Ticket, and a Balance Voucher. You will then need to have sold a Balance Voucher in order to create a Sold Balance Gift Voucher that you can then use for payment.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- voucherRef (the ref of an existing balance voucher that has already been sold to use as the payment method)\n- ticketID (the id of a ticket to purchase)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5064541"
 	},
 	"item": [
 		{
@@ -12,7 +13,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5e64991f-23ad-43e0-9cbc-2ccd6a1fa8d5",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
@@ -27,7 +27,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "1ed925ad-bbf5-4d5c-9876-e2647a273982",
 						"exec": [
 							"// Clear all the variables that are set dynamically using request repsonses e.g. apiKeys",
 							"// If we don't clear these, they get saved and polute the next run using an invalid apiKey for example.",
@@ -86,7 +85,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8f30d478-815c-4782-8bde-c88f849d21cc",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"itemID\", jsonData.itemID);",
@@ -174,7 +172,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -186,7 +184,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -194,207 +192,6 @@
 						}
 					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cart calculations (optional)",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "30ab0ae7-9ea6-40dd-a339-4df07e71c541",
-						"exec": [
-							"pm.test(\"Status test\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "in",
-							"value": "query",
-							"type": "string"
-						},
-						{
-							"key": "value",
-							"value": "{{apiKey}}",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "apiKey",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Sec-Fetch-Mode",
-						"value": "cors"
-					},
-					{
-						"key": "DNT",
-						"value": "1"
-					},
-					{
-						"key": "Accept-Language",
-						"value": "en-GB,en-US;q=0.9,en;q=0.8"
-					},
-					{
-						"key": "Sec-Fetch-Dest",
-						"value": "empty"
-					},
-					{
-						"key": "Connection",
-						"value": "keep-alive"
-					},
-					{
-						"key": "Pragma",
-						"value": "no-cache"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
-					},
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/x-www-form-urlencoded"
-					},
-					{
-						"key": "Accept",
-						"value": "*/*"
-					},
-					{
-						"key": "Cache-Control",
-						"value": "no-cache"
-					},
-					{
-						"key": "Referer",
-						"value": "https://epos.digitickets.test/"
-					},
-					{
-						"key": "Sec-Fetch-Site",
-						"value": "same-site"
-					},
-					{
-						"key": "Origin",
-						"value": "https://epos.digitickets.test"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "date",
-							"value": "{{currentDateTime}}",
-							"type": "text"
-						},
-						{
-							"key": "deviceID",
-							"value": "4",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][baseTotal]",
-							"value": "{{ticketPrice}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][branchID]",
-							"value": "1",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][discountAmount]",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][discountedBaseTotal]",
-							"value": "{{ticketPrice}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][discountPercentage]",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][donation]",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][giftaid]",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][itemID]",
-							"value": "{{itemID}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][itemType]",
-							"value": "{{itemType}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][lineNumber]",
-							"value": " 1",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][lineTotal]",
-							"value": "{{ticketPrice}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][price]",
-							"value": "{{ticketPrice}}",
-							"type": "text"
-						},
-						{
-							"key": "lines[0][qty]",
-							"value": "1",
-							"type": "text"
-						}
-					],
-					"options": {
-						"formdata": {}
-					}
-				},
-				"url": {
-					"raw": "{{apiUrl}}/v2/cartcalculations?branchID=1&isoDates=1",
-					"host": [
-						"{{apiUrl}}"
-					],
-					"path": [
-						"v2",
-						"cartcalculations"
-					],
-					"query": [
-						{
-							"key": "branchID",
-							"value": "1"
-						},
-						{
-							"key": "isoDates",
-							"value": "1"
-						}
-					]
-				},
-				"description": "This request can be used to check and apply offers/discounts"
 			},
 			"response": []
 		},
@@ -404,7 +201,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "30ab0ae7-9ea6-40dd-a339-4df07e71c541",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
@@ -574,13 +370,10 @@
 							"value": " 1",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/reservations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -591,7 +384,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -609,7 +402,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8f30d478-815c-4782-8bde-c88f849d21cc",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -697,7 +489,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref=INVALIDREF&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref=INVALIDREF&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -708,7 +500,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -733,7 +525,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "76da3018-8d3b-421d-892e-0543554fb771",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -816,7 +607,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -827,7 +618,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -852,7 +643,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b5099747-9803-4910-8f7b-a2b7acbf4159",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1036,13 +826,10 @@
 							"value": "{{ticketPrice}}",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/orders?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -1053,7 +840,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -1071,7 +858,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1e0d37a3-a20a-42d1-a65a-dc77b88071d3",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1154,7 +940,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -1165,7 +951,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -1190,7 +976,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "ff18ca91-bd14-48d2-991b-88600bcd509a",
 				"type": "text/javascript",
 				"exec": [
 					"const d = new Date();",
@@ -1212,7 +997,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "68b9920c-35f1-4e07-b3e3-c5f9310198a8",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1222,50 +1006,45 @@
 	],
 	"variable": [
 		{
-			"id": "fd7d753a-fecb-476d-a62e-1901187ce18a",
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
-			"id": "be45ffa7-e6f7-4c7e-a8ba-d6122eaf347e",
 			"key": "currentDateTimeISO",
 			"value": ""
 		},
 		{
-			"id": "0c52fbcf-61b3-4ddb-a2da-3002d569d900",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "5405d2e6-2e42-41de-8a87-df3df8ea59a4",
 			"key": "ticketID",
 			"value": "4"
 		},
 		{
-			"id": "590a4387-22c4-4715-90a9-8a65e4950d2b",
 			"key": "itemID",
 			"value": ""
 		},
 		{
-			"id": "20e0721c-8fed-459d-a141-dafb2382677f",
 			"key": "itemType",
 			"value": ""
 		},
 		{
-			"id": "362e35c0-3b54-4d8d-9aff-c9a947f27428",
 			"key": "ticketPrice",
-			"value": ""
+			"value": "s"
 		},
 		{
-			"id": "a9404a76-74d4-4933-afbe-15ac5e99bdae",
 			"key": "voucherRef",
 			"value": "VCXY-NY87-FC82-Z389"
 		},
 		{
-			"id": "8f4069b4-dcab-4439-8ec5-4a944bc6dc9b",
 			"key": "reservationToken",
 			"value": ""
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

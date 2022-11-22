@@ -3,7 +3,8 @@
 		"_postman_id": "19fe504f-dee0-4498-8014-4dc97ed8ea08",
 		"name": "DigiTickets Experience Voucher",
 		"description": "#Overview\n\nAn example of creating a new order using a DigiTickets Experience Voucher as a payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user, a Ticket, and an Experience Voucher. You will then need to sell an Experience Gift Voucher that you can then use for payment.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- voucherRef (the ref of an existing experience voucher that has already been sold to use as the payment method)\n- ticketID (the id of a ticket to purchase)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5064541"
 	},
 	"item": [
 		{
@@ -12,7 +13,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e7d2a3fe-ebbf-44fe-a5d5-faa7dba42d44",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"apiKey\", jsonData.user.apiKey);",
@@ -27,7 +27,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "88036422-33dc-40c2-9953-569b043597c1",
 						"exec": [
 							"// Clear all the variables that are set dynamically using request repsonses e.g. apiKeys",
 							"// If we don't clear these, they get saved and polute the next run using an invalid apiKey for example.",
@@ -86,7 +85,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0cb2b7e8-514c-4f66-b87a-b8efadcc0dac",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"",
@@ -175,7 +173,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/tickets/{{ticketID}}?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -187,7 +185,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -204,7 +202,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c95b21df-b4f2-40fe-88d6-fc9faa07105b",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -370,13 +367,10 @@
 							"value": "1",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/cartcalculations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/cartcalculations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -387,7 +381,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -405,7 +399,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a447cdcf-a6a3-41cf-a9ed-8dafad97d5b8",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -493,7 +486,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref=INVALIDREF&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref=INVALIDREF&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -504,7 +497,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -529,7 +522,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "908c76a0-be10-451d-93ff-fc6a16cd6cd3",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -623,7 +615,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -634,7 +626,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -659,7 +651,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "039bf6a1-bce0-4903-83b6-bb922b8990c9",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -856,13 +847,10 @@
 							"value": "{{voucherRef}}",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/cartcalculations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/cartcalculations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -873,7 +861,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -891,7 +879,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3908f6eb-865d-4007-8b30-4aaf47584051",
 						"exec": [
 							"const jsonData = JSON.parse(responseBody);",
 							"pm.collectionVariables.set(\"reservationToken\", jsonData.reservation.token);",
@@ -1061,13 +1048,10 @@
 							"value": " 1",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/reservations?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/reservations?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -1078,7 +1062,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -1096,7 +1080,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "227269f6-4151-4804-8647-c6d348a05992",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1280,13 +1263,10 @@
 							"value": "{{discountedBaseTotal}}",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
-					"raw": "{{apiUrl}}/v2/orders?branchID=1&isoDates=1",
+					"raw": "{{apiUrl}}/v2/orders?branchID={{branchID}}&isoDates=1",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -1297,7 +1277,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -1315,7 +1295,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3623b431-9b1b-42b2-b9d3-ae46b2d628ac",
 						"exec": [
 							"pm.test(\"Status test\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1398,7 +1377,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID=1&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
+					"raw": "{{apiUrl}}/v2/soldgiftvouchers?branchID={{branchID}}&isoDates=1&ref={{voucherRef}}&resolve=giftvoucher,recipient",
 					"host": [
 						"{{apiUrl}}"
 					],
@@ -1409,7 +1388,7 @@
 					"query": [
 						{
 							"key": "branchID",
-							"value": "1"
+							"value": "{{branchID}}"
 						},
 						{
 							"key": "isoDates",
@@ -1434,7 +1413,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "53c82acd-a90a-4c7a-af45-368f1e881e41",
 				"type": "text/javascript",
 				"exec": [
 					"const d = new Date();",
@@ -1456,7 +1434,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "12ab29a4-78f6-4ef9-a0bd-bfcc78c3d7f6",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1466,70 +1443,61 @@
 	],
 	"variable": [
 		{
-			"id": "9792593e-2f6f-4c26-ab98-04e709c2d1e3",
 			"key": "currentDateTime",
 			"value": ""
 		},
 		{
-			"id": "3ddd9b5f-0ce2-4c6f-8b0a-275300b227a0",
 			"key": "currentDateTimeISO",
 			"value": ""
 		},
 		{
-			"id": "f1eeef68-4687-462d-902b-29ab6ca65595",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "669a5ae1-95c9-402a-9f21-8487e118f68d",
 			"key": "ticketID",
 			"value": "110"
 		},
 		{
-			"id": "57cf04e2-bf7a-4eca-8a3c-22836d1d80aa",
 			"key": "itemID",
 			"value": ""
 		},
 		{
-			"id": "30878cb1-760b-4a16-9043-a7101411755a",
 			"key": "itemType",
 			"value": ""
 		},
 		{
-			"id": "375d70ca-b284-460e-9857-67011d7ce1e8",
 			"key": "ticketPrice",
 			"value": ""
 		},
 		{
-			"id": "13e7f94c-286d-4b99-a365-2d213bd5ef77",
 			"key": "voucherRef",
-			"value": "VD9956PBCPP882VH"
+			"value": "VHHJ-9CQT-35DW-42P8"
 		},
 		{
-			"id": "2ed6688f-7572-4e73-9be9-f4f01d221d4e",
 			"key": "voucherPrice",
 			"value": ""
 		},
 		{
-			"id": "4fdb0032-87bd-4b95-9ca4-72db78504eb9",
 			"key": "reservationToken",
 			"value": ""
 		},
 		{
-			"id": "a9fb136c-5ba3-426f-8c59-3e9933e920cd",
 			"key": "discountAmount",
 			"value": ""
 		},
 		{
-			"id": "c03b9227-5673-41e3-9a0e-6f6f8df1583a",
 			"key": "discountPercent",
 			"value": ""
 		},
 		{
-			"id": "1dd3555f-e3dd-4a0d-b1ed-15ba6fa95e0b",
 			"key": "discountedBaseTotal",
 			"value": ""
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

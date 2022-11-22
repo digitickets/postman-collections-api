@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "fb4e5839-8b52-4c73-974f-7c6b1ce8e1b5",
-		"name": "Order - Membership with customer account",
+		"name": "Membership with customer account",
 		"description": "#Overview\n\nAn example of creating a new order using a cash as the payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user and a Ticket.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- ticketID (the id of a ticket to purchase)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5064541"
@@ -254,12 +254,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://api.digitickets.test/v2/customeraccounts?email=test.{{$timestamp}}@example.com&house={{$randomInt}}&street={{$randomStreetName}}&town={{$randomCity}}&countryCode=GB&postcode=SW1A 2AA&firstName={{$randomFirstName}}&lastName={{$randomLastName}}",
-					"protocol": "http",
+					"raw": "{{apiUrl}}/v2/customeraccounts?email=test.{{$timestamp}}@example.com&house={{$randomInt}}&street={{$randomStreetName}}&town={{$randomCity}}&countryCode=GB&postcode=SW1A 2AA&firstName={{$randomFirstName}}&lastName={{$randomLastName}}",
 					"host": [
-						"api",
-						"digitickets",
-						"test"
+						"{{apiUrl}}"
 					],
 					"path": [
 						"v2",

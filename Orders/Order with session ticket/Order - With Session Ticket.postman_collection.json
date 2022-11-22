@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "96652857-fef3-4b68-bbb4-235a3dc401a8",
-		"name": "Git - Order - With Session Ticket",
+		"name": "Order - With Session Ticket",
 		"description": "#Overview\n\nAn example of creating a new order using a cash as the payment method.\n\n#Prerequisites\n\nTo run this collection you will need access to a demo company with an API user and a Ticket.\n\n#Set environment variables\n\nEdit your environment to set values for the following variables: \n\n- apiUrl (e.g. https://api.digitickets.co.uk)\n- apiUser\n- apiPassword\n\n(Or alternatively create the variables as collection variables)\n\n#Set collection variables\n\nEdit the collection variables and set:\n\n- ticketID (the id of a ticket to purchase)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5064541"
