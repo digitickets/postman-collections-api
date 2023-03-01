@@ -1,10 +1,14 @@
-# Create a Customer Account and Order for a session based ticket sending an email receipt
+# Create a Customer Account and Order for a session based ticket with param to send an email receipt
 
 An example of creating a new order using card offline as the payment method. We create a customer account and use this account when we later create the order.
 
 If your test company has tax enabled then tax will be applied to this order at the rate you have set on the ticket.
 
-Sending the `customerAccountID` and `sendEmailReceipt=1` in the request to `/v2/orders` means that an email receipt is sent automatically.
+Sending a `customerAccountID` in the request to `/v2/orders` links the order to the Customer Account.
+
+If the Customer Account has an email address associated with it then sending `sendEmailReceipt=1` when making the request to `/v2/orders` will cause and email receipt to be generated and sent. 
+
+**Please note** by default this collection will not send an email. It generates fake customer data with an email at the `example.com` domain and `sendEmailReceipt=0`
 
 ## Request flow
 
