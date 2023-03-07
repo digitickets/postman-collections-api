@@ -8,7 +8,7 @@ Sending a `customerAccountID` in the request to `/v2/orders` links the order to 
 
 If the Customer Account has an email address associated with it then sending `sendEmailReceipt=1` when making the request to `/v2/orders` will cause and email receipt to be generated and sent. 
 
-**Please note** by default this collection will not send an email. It generates fake customer data with an email at the `example.com` domain and `sendEmailReceipt=0`
+**Please note** by default this collection will not successfully send an emails. It generates fake customer data with an email at the `example.com` domain.
 
 ## Request flow
 
