@@ -24,6 +24,21 @@ You can also use the `DigiTicketsAPI.postman_environment.json` file which will n
 
 Values such as ticketIDs from your test company can be used as 'collection variables' to allow you to run and work with the collections.
 
+## Order flows
+
+### Confirmed Order Flow
+The existing process of creating orders detailed in **/Orders** 
+
+- Orders created this way are confirmed automatically.
+- Payments can be sent as part of the order creation request.
+
+### Unconfirmed Order Flow
+The new order flow detailed in **/Unconfirmed Order Flow**
+
+- Orders created this way are unconfirmed
+- You must confirm the order with additional request
+- Payments should be sent in a separate request
+
 
 
 
